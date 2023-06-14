@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# https://docs.cloudfoundry.org/buildpacks/understand-buildpacks.html
+
+BUILD_DIR="${1}"
+CACHE_DIR="${2}"
+DEPS_DIR="${3}"
+DEPS_IDX="${4}"
+
+BUILDPACK_DIR=$(dirname $(readlink -f ${BASH_SOURCE%/*}))
+source ${BUILDPACK_DIR}/parameters.sh
+
+[ -f "${BUILD_DIR}/runtime.txt" ] && VECTOR_VERSION=$(grep -v '^#' "${BUILD_DIR}/runtime.txt" | head -n1)
+
+echo "-----> Installing Vector"
+mkdir -p "${VECTOR_DIR}"
+tar -zxf "${CACHE_DIR}/vector-${VECTOR_VERSION}.tar.gz" -C "${VECTOR_DIR}" --strip-components 1
+chmod +x ${VECTOR_DIR}/bin/vector*
+
+echo "-----> Symlinking properties and default configuration"
+mkdir -p "$BUILD_DIR/.profile.d"
+cat <<EOF > "$BUILD_DIR/.profile.d/0010_vector.sh"
+export VECTOR_VERSION=${VECTOR_VERSION}
+export YQ_VERSION=${YQ_VERSION}
+
+export VECTOR_ROOT="/home/vcap/deps/${DEPS_IDX}/vector"
+export YQ_ROOT="/home/vcap/deps/${DEPS_IDX}/yq"
+EOF
