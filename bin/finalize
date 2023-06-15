@@ -21,8 +21,6 @@ echo "-----> Symlinking properties and default configuration"
 mkdir -p "$BUILD_DIR/.profile.d"
 cat <<EOF > "$BUILD_DIR/.profile.d/0010_vector.sh"
 export VECTOR_VERSION=${VECTOR_VERSION}
-export YQ_VERSION=${YQ_VERSION}
 
 export VECTOR_ROOT="/home/vcap/deps/${DEPS_IDX}/vector"
-export YQ_ROOT="/home/vcap/deps/${DEPS_IDX}/yq"
 EOF
