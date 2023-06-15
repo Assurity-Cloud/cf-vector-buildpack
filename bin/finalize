@@ -14,10 +14,10 @@ source ${BUILDPACK_DIR}/parameters.sh
 
 echo "-----> Installing Vector"
 mkdir -p "${VECTOR_DIR}"
-tar -zxf "${CACHE_DIR}/vector-${VECTOR_VERSION}.tar.gz" -C "${VECTOR_DIR}" --strip-components 1
+tar -zxf "${CACHE_DIR}/vector-${VECTOR_VERSION}.tar.gz" -C "${VECTOR_DIR}" --strip-components 2
 cd ${VECTOR_DIR}
 ls -lart
-cd bin
+cd vector-x86_64-unknown-linux-gnu
 ls -lart
 chmod +x ${VECTOR_DIR}/bin/vector
 
