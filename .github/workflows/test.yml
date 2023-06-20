@@ -16,5 +16,5 @@ jobs:
       - name: test
         uses: sudo-bot/action-shunit2@latest
         with:
-          cli: "${GITHUB_WORKSPACE}/test/test.sh"
+          cli: "./test/test.sh"
 
