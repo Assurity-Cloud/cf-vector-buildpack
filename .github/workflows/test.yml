@@ -18,6 +18,11 @@ jobs:
         with:
           version: 1.6
 
+      - name: 'Check jq'
+        run: |
+          which jq
+          jq --version
+
       - name: test
         uses: sudo-bot/action-shunit2@latest
         with:
