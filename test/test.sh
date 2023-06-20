@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
-command -v shunit2 >/dev/null 2>&1 || { echo >&2 "please install 'shunit2'"; exit 1; }
+shunit2_location=""
+shunit2_location="$(which shunit2)" || {
+  curl -sLo shunit2 https://raw.githubusercontent.com/kward/shunit2/master/shunit2
+  chmod +x shunit2
+  shunit2_location=$PWD/shunit2
+}
 
 setUp() {
   read -r -d '' VCAP_SERVICES <<-EOF
@@ -83,5 +88,4 @@ EOF
 }
 
 # Run tests by sourcing shunit2
-shunit2_location="$(which shunit2)"
 source "${shunit2_location}"
