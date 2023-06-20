@@ -35,12 +35,10 @@ setUp() {
 }
 EOF
   export VCAP_SERVICES="${VCAP_SERVICES}"
-  pushd ..
-    export APP_ROOT=$PWD/tmp
-    mkdir -p "${APP_ROOT}"
-  popd
+  export APP_ROOT=$PWD/tmp
+  mkdir -p "${APP_ROOT}"
 
-  source ../functions.sh
+  source functions.sh
   set +e # Undo fail fast from main.sh
 
 
