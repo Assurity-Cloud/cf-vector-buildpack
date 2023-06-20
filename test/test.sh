@@ -47,7 +47,9 @@ EOF
 }
 
 tearDown() {
-  rm -r "${APP_ROOT}"
+  if [ -d "${APP_ROOT}" ]; then
+    rm -r "${APP_ROOT}"
+  fi
 }
 
 test_set_provisioned_service() {
