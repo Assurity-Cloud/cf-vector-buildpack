@@ -13,8 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install JQ Tool
-        uses: mbround18/install-jq@v1
+      - name: Setup jq
+        uses: dcarbone/install-jq-action@v1.0.1
+        with:
+          version: 1.6
 
       - name: test
         uses: sudo-bot/action-shunit2@latest
