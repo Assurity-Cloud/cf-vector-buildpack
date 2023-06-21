@@ -62,9 +62,9 @@ tearDown() {
   fi
 }
 
-test_set_provisioned_services_sets_password() {
+test_set_provisioned_services_sets_password_with_control_characters() {
 
-  # Given there is a configuration file with a placeholder and a matching binding name that is in VCAP_SERVICES
+  # Given there is a configuration file with a placeholder for a password containing control characters
   export PROVISIONED_SERVICE_BINDING_NAMES=influxdb1
   cat <<-EOF > "${APP_ROOT}/test.yml"
 test_password: \${influxdb1.credentials.password}
@@ -75,13 +75,13 @@ EOF
   processExitCode=$?
   assertEquals 0 "${processExitCode}"
 
-  # The placeholder gets substituted for the actual value
+  # The placeholder gets substituted for the correct value
   assertEquals "test_password: 63T!LT@Mk5dE>8(x]lQ0ljLwrf{xpp/+#cS9cS&%YU&u?kM$+Esi1b4>pVvIIr}n" "$(cat ${APP_ROOT}/test.yml)"
 }
 
 test_set_provisioned_services_sets_url() {
 
-  # Given there is a configuration file with a placeholder and a matching binding name that is in VCAP_SERVICES
+  # Given there is a configuration file with a placeholder for a url
   export PROVISIONED_SERVICE_BINDING_NAMES=influxdb1
   cat <<-EOF > "${APP_ROOT}/test.yml"
 test_url: \${influxdb1.credentials.url}
@@ -92,14 +92,14 @@ EOF
   processExitCode=$?
   assertEquals 0 "${processExitCode}"
 
-  # The placeholder gets substituted for the actual value
+  # The placeholder gets substituted for the correct value
   assertEquals "test_url: HTTPS://cloudflare.ap-org-demo.csb.service:443" "$(cat ${APP_ROOT}/test.yml)"
 }
 
 
 test_set_provisioned_services_sets_databases() {
 
-  # Given there is a configuration file with a placeholder and a matching binding name that is in VCAP_SERVICES
+  # Given there is a configuration file with a placeholder for a list of databases
   export PROVISIONED_SERVICE_BINDING_NAMES=influxdb1
   cat <<-EOF > "${APP_ROOT}/test.yml"
 test_databases: \${influxdb1.credentials.databases}
@@ -110,7 +110,7 @@ EOF
   processExitCode=$?
   assertEquals 0 "${processExitCode}"
 
-  # The placeholder gets substituted for the actual value
+  # The placeholder gets substituted for the correct value
   assertEquals "test_databases: [\"db\"]" "$(cat ${APP_ROOT}/test.yml)"
 }
 
