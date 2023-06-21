@@ -7,21 +7,27 @@ get_binding_service() {
 }
 
 substitute_provisioned_service_values() {
-  placeholder="${1}"
-  value="${2}"
+  local placeholder="${1}"
+  local value="$(printf "%q" "${2}")"
+
+  if [[ ${value} == *"/"* ]]; then
+    value="$(echo "${value}" | sed "s#/#\\\/#g")"
+  fi
+
+  echo "Replacing ${placeholder} with ${value} in ${APP_ROOT}/**.*ml"
 
   sed -i -- "s/\${${placeholder}}/${value}/g" ${APP_ROOT}/**.*ml
 }
 
 iterate_provisioned_service_values() {
-  name_prefix="${1}"
-  json="${2}"
+  local name_prefix="${1}"
+  local json=${2}
 
-  echo "${json}" | jq -c 'to_entries | .[] | select(.value |  scalars)' | while read i; do
-      substitute_provisioned_service_values "${name_prefix}.$(echo "${i}" | jq -r '.key')" "$(echo "${i}" | jq -r '.value')"
+  echo "${json}" | jq -c -r 'to_entries | .[] | select(.value | scalars)' | while read -r i; do
+    substitute_provisioned_service_values "${name_prefix}.$(echo "${i}" | jq -r '.key')" "$(echo "${i}" | jq -r '.value')"
   done
-  echo "${json}" | jq -c 'to_entries | .[] | select(.value |  iterables)' | while read i; do
-      iterate_provisioned_service_values "${name_prefix}.$(echo "${i}" | jq -r '.key')" "$(echo "${i}" | jq '.value')"
+  echo "${json}" | jq -c -r 'to_entries | .[] | select(.value | iterables)' | while read -r i; do
+    iterate_provisioned_service_values "${name_prefix}.$(echo "${i}" | jq -r '.key')" "$(echo "${i}" | jq -r '.value')"
   done
 }
 
@@ -35,8 +41,10 @@ set_provisioned_service() {
 }
 
 set_provisioned_services() {
-  if [[ -z ${PROVISIONED_SERVICE_BINDING_NAMES} ]]; then
+  echo "Provisioned service binding names: ${PROVISIONED_SERVICE_BINDING_NAMES}"
+  if [[ ! -z ${PROVISIONED_SERVICE_BINDING_NAMES} ]]; then
     for provisioned_service_binding in ${PROVISIONED_SERVICE_BINDING_NAMES//,/ }; do
+      echo "Looking for provisioned_service ${provisioned_service_binding}"
       set_provisioned_service "${provisioned_service_binding}"
     done
   fi
