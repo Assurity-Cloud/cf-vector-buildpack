@@ -11,5 +11,11 @@ export PROVISIONED_SERVICE_BINDING_NAMES=${PROVISIONED_SERVICE_BINDING_NAMES:-""
 source functions.sh
 set_provisioned_services
 
-rm ${APP_ROOT}/test-*.toml
-$VECTOR_ROOT/bin/vector $VECTOR_OPTS --config ${APP_ROOT}/*.toml
+config=""
+for f in $(ls ${APP_ROOT}/[^test-]*.toml); do
+  config="${config} -c ${f}"
+done
+
+echo "Starting vector with config files:${config}"
+
+$(${VECTOR_ROOT}/bin/vector ${VECTOR_OPTS}${config})
