@@ -11,4 +11,5 @@ export PROVISIONED_SERVICE_BINDING_NAMES=${PROVISIONED_SERVICE_BINDING_NAMES:-""
 source functions.sh
 set_provisioned_services
 
-$VECTOR_ROOT/bin/vector $VECTOR_OPTS --config ${APP_ROOT}/[^"test-"]*.toml
+rm ${APP_ROOT}/test-*.toml
+$VECTOR_ROOT/bin/vector $VECTOR_OPTS --config ${APP_ROOT}/*.toml
