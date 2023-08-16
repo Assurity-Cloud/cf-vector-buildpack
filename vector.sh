@@ -12,7 +12,7 @@ source functions.sh
 set_provisioned_services
 
 config=""
-for f in $(ls ${APP_ROOT}/[^test-]*.toml); do
+for f in $(ls ./vector-configs/*.toml | grep -v "test-"); do
   config="${config} -c ${f}"
 done
 
