@@ -1,10 +1,4 @@
 #!/usr/bin/env bash
-# bin/detect <build-dir>
-set -e
 
-BUILD_DIR=$(cd "$1/" && pwd)
-
-# Accepts all apps!
-echo "Vector"
-exit 0
-
+# detect disabled, must explicitly specify buildpack
+exit 1
