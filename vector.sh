@@ -17,5 +17,6 @@ for f in $(ls ${APP_ROOT}/*.toml | grep -v "test-"); do
 done
 
 echo "Starting vector with config files:${config}"
+echo "${VECTOR_ROOT}/bin/vector ${VECTOR_OPTS}${config}"
 
 $(${VECTOR_ROOT}/bin/vector ${VECTOR_OPTS}${config})
