@@ -10,3 +10,7 @@ separated value, to support multiple bound services.
 will be surrounded by `${}`. The first part of the reference will be the binding name, followed by the json path to the 
 value. For example, to get the bucket name of an S3 bucket bound with the binding name "my_s3_bucket" use
 `${my_s3_bucket.credentials.bucket_name}`
+
+# License
+
+MIT License
