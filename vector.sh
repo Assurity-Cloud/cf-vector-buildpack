@@ -5,7 +5,7 @@ set -euo pipefail
 ROOT="${ROOT:-/home/vcap}"
 export APP_ROOT="${ROOT}/app"
 export VECTOR_ROOT="${VECTOR_ROOT}"
-export VECTOR_OPTS=${VECTOR_OPTS:-"--quiet"}
+export VECTOR_OPTS=${VECTOR_OPTS:-""}
 export PROVISIONED_SERVICE_BINDING_NAMES=${PROVISIONED_SERVICE_BINDING_NAMES:-""}
 
 source functions.sh
