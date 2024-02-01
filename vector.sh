@@ -5,7 +5,7 @@ set -euo pipefail
 ROOT="${ROOT:-/home/vcap}"
 export APP_ROOT="${ROOT}/app"
 export VECTOR_ROOT="${VECTOR_ROOT}"
-export VECTOR_OPTS=${VECTOR_OPTS:-""}
+export VECTOR_OPTS=${VECTOR_OPTS:-"--quiet"}
 export PROVISIONED_SERVICE_BINDING_NAMES=${PROVISIONED_SERVICE_BINDING_NAMES:-""}
 
 source functions.sh
@@ -17,5 +17,6 @@ for f in $(ls ${APP_ROOT}/*.toml | grep -v "test-"); do
 done
 
 echo "Starting vector with config files:${config}"
+echo "${VECTOR_ROOT}/bin/vector ${VECTOR_OPTS}${config}"
 
 $(${VECTOR_ROOT}/bin/vector ${VECTOR_OPTS}${config})
