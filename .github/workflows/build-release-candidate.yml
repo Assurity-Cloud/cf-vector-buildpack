@@ -1,0 +1,48 @@
+name: build-release-candidate
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '.github/**'
+      - 'README.md'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: bump version and push tag (dry run)
+        id: tag_version_dry_run
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          dry_run: true
+          pre_release_branches: ^(?!main$).*
+          append_to_pre_release_tag: rc
+
+      - name: build
+        run: |
+          zip -r "vector-buildpack-cflinuxfs4-v${{ steps.tag_version_dry_run.outputs.new_version }}.zip" .
+
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pre_release_branches: ^(?!main$).*
+          append_to_pre_release_tag: rc
+
+      - name: publish-candidate
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ steps.tag_version.outputs.new_tag }}
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          files: |
+            vector-buildpack-buildpack-cflinuxfs4-v${{ steps.tag_version_dry_run.outputs.new_version }}.zip
