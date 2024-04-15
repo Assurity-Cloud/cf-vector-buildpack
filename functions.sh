@@ -49,4 +49,3 @@ set_provisioned_services() {
     done
   fi
 }
-
