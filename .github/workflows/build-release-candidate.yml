@@ -1,4 +1,4 @@
-name: build-release
+name: build-release-candidate
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
     paths-ignore:
       - '.github/**'
       - 'README.md'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -23,6 +24,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           dry_run: true
+          pre_release_branches: ^(?!main$).*
+          append_to_pre_release_tag: rc
 
       - name: build
         run: |
@@ -33,7 +36,8 @@ jobs:
         uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          tag_prefix: v
+          pre_release_branches: ^(?!main$).*
+          append_to_pre_release_tag: rc
 
       - name: publish-candidate
         uses: softprops/action-gh-release@v1
@@ -41,16 +45,4 @@ jobs:
           name: ${{ steps.tag_version.outputs.new_tag }}
           tag_name: ${{ steps.tag_version.outputs.new_tag }}
           files: |
-            vector-buildpack-cflinuxfs4-v${{ steps.tag_version_dry_run.outputs.new_version }}.zip
-
-      - name: delete-rc-releases
-        uses: dev-drprasad/delete-older-releases@v0.2.0
-        with:
-          keep_latest: 0
-          delete_tag_pattern: rc
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: delete-rc-tags
-        run: |
-          git push --delete origin $(git tag -l '*-rc*') || echo "no rc tags to delete"
+            vector-buildpack-buildpack-cflinuxfs4-v${{ steps.tag_version_dry_run.outputs.new_version }}.zip
