@@ -14,7 +14,7 @@ substitute_provisioned_service_values() {
     value="$(echo "${value}" | sed "s#/#\\\/#g")"
   fi
 
-  echo "Replacing ${placeholder} with ${value} in ${APP_ROOT}/**.*ml"
+  echo "Replacing ${placeholder} in ${APP_ROOT}/**.*ml"
 
   sed -i -- "s/\${${placeholder}}/${value}/g" ${APP_ROOT}/**.*ml
 }
