@@ -23,12 +23,9 @@ if [[ ! -z ${VECTOR_CONFIG_DIRS} ]] ; then
   done
 else
   echo "VECTOR_CONFIG_DIRS not present, will start with all vector config files in app directory"
-  for config_file in $(ls ${APP_ROOT}/*.*ml | grep -v "test-"); do
-    config_files="${config_files} --config ${config_file}"
-  done
+  config_dirs="--config-dir ${APP_ROOT}"
 fi
 
-echo "Starting vector with config files: ${config_files}"
 echo "Starting vector with config config_dirs: ${config_dirs}"
 
-$(${VECTOR_ROOT}/bin/vector ${VECTOR_OPTS}${config_dirs}${config_files})
+$(${VECTOR_ROOT}/bin/vector ${VECTOR_OPTS}${config_dirs})
