@@ -27,7 +27,7 @@ else
   done
 fi
 
-echo "Starting vector with config files:${config_files}"
-echo "Starting vector with config config_dirs:${config_dirs}"
+echo "Starting vector with config files: ${config_files}"
+echo "Starting vector with config config_dirs: ${config_dirs}"
 
 $(${VECTOR_ROOT}/bin/vector ${VECTOR_OPTS}${config_dirs}${config_files})
