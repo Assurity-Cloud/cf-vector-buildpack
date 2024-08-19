@@ -23,7 +23,7 @@ if [[ ! -z ${VECTOR_CONFIG_DIRS} ]] ; then
   done
 else
   echo "VECTOR_CONFIG_DIRS not present, will start with all vector config files in app directory"
-  config_dirs="--config-dir ${APP_ROOT}"
+  config_dirs=" --config-dir ${APP_ROOT}"
 fi
 
 echo "Starting vector with config config_dirs: ${config_dirs}"
