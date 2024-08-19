@@ -6,6 +6,7 @@ ROOT="${ROOT:-/home/vcap}"
 export APP_ROOT="${ROOT}/app"
 export VECTOR_ROOT="${VECTOR_ROOT}"
 export VECTOR_OPTS=${VECTOR_OPTS:-""}
+export VECTOR_CONFIG_DIRS="${VECTOR_CONFIG_DIRS}"
 export PROVISIONED_SERVICE_BINDING_NAMES=${PROVISIONED_SERVICE_BINDING_NAMES:-""}
 
 source functions.sh
@@ -18,7 +19,7 @@ if [[ ! -z ${VECTOR_CONFIG_DIRS} ]] ; then
   echo "VECTOR_CONFIG_DIRS present with value: ${VECTOR_CONFIG_DIRS}"
   for config_dir in ${VECTOR_CONFIG_DIRS//,/ }
   do
-    config_dirs="${config_dirs} --config-dir ${config_dirs}"
+    config_dirs="${config_dirs} --config-dir ${config_dir}"
   done
 else
   echo "VECTOR_CONFIG_DIRS not present, will start with all vector config files in app directory"
